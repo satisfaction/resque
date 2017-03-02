@@ -204,9 +204,11 @@ module Resque
     end
 
     post "/failed/requeue/all" do
-      Resque::Failure.count.times do |num|
+      failed_jobs_count = Resque::Failure.count
+      failed_jobs_count.times do |num|
         Resque::Failure.requeue(num)
       end
+       Resque.redis.ltrim(:failed, failed_jobs_count, -1)
       redirect u('failed')
     end
 

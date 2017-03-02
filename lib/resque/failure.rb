@@ -92,7 +92,6 @@ module Resque
 
     def self.requeue(id)
       backend.requeue(id)
-      self.remove(id)
     end
 
     def self.remove(id)
